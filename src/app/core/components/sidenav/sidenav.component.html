@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button type="button"
+            aria-label="Toggle sidenav"
+            mat-icon-button
+            color="accent">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    <!--    <span><img src="./assets/devglan.png"></span>-->
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side"
+               opened>
+    <mat-nav-list>
+      <a *ngFor="let route of routes"
+         mat-list-item
+         [routerLink]="route.path"
+         routerLinkActive="active-link">
+        <mat-icon>{{route.icon}}</mat-icon>
+        <span>{{ route.title }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content-container">
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
