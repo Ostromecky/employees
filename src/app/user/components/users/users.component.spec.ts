@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { UserServiceSpy } from '../../service/mock/userServiceSpy';
+import { UserService } from '../../service/user.service';
 
 import { UsersComponent } from './users.component';
 
@@ -8,9 +10,14 @@ describe('UsersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UsersComponent ]
+      declarations: [UsersComponent],
+      providers: [
+        {
+          provide: UserService,
+          useClass: UserServiceSpy
+        }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

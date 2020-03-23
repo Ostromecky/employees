@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +21,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule,
+    HttpClientModule,
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
@@ -32,6 +34,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule,
+    HttpClientModule,
     MatSidenavModule,
     MatMenuModule,
     MatListModule,
