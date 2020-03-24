@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstname": "Ędward",
+      "lastname": "Ącki"
+    },
+    {
+      "id": 2,
+      "firstname": "Krzysztof",
+      "lastname": "Czwartek"
+    },
+    {
+      "id": 3,
+      "firstname": "Jan",
+      "lastname": "Nowak"
+    },
+    {
+      "id": 4,
+      "firstname": "Adam",
+      "lastname": "Mały"
+    },
+    {
+      "id": 5,
+      "firstname": "Robert",
+      "lastname": "Prawandowski"
+    },
+    {
+      "id": 6,
+      "firstname": "Kamil",
+      "lastname": "Sztos"
+    },
+    {
+      "id": 7,
+      "firstname": "Krystian",
+      "lastname": "Ronald"
+    },
+    {
+      "id": 8,
+      "firstname": "Pistolet",
+      "lastname": "Długolufy"
+    },
+    {
+      "id": 9,
+      "firstname": "Jacek",
+      "lastname": "Wróbel"
+    },
+    {
+      "id": 10,
+      "firstname": "Karol",
+      "lastname": "Jaśkowiak"
+    }
+  ]
+}
