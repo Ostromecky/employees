@@ -9,7 +9,7 @@
     <div class="example-table-container">
 
       <table mat-table
-             [dataSource]="data"
+             [dataSource]="data$ | async"
              class="example-table"
              matSort>
 
@@ -41,7 +41,7 @@
       </table>
     </div>
 
-    <mat-paginator [length]="resultsLength"
-                   [pageSize]="5"></mat-paginator>
+    <mat-paginator [length]="10"
+                   [pageSizeOptions]="[5,10]"></mat-paginator>
   </div>
 </div>
