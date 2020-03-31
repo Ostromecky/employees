@@ -9,6 +9,7 @@
     <div class="example-table-container">
 
       <table mat-table
+             [formGroup]="form"
              [dataSource]="data$ | async"
              class="example-table"
              matSort>
@@ -17,8 +18,16 @@
         <ng-container matColumnDef="firstname">
           <th mat-header-cell
               *matHeaderCellDef
+              appMatFilter
               mat-sort-header>
             Firstname
+            <mat-form-field appearance="fill"
+            >
+              <mat-label>Firstname</mat-label>
+              <input matInput
+                     formControlName="firstname"
+                     autocomplete="off">
+            </mat-form-field>
           </th>
           <td mat-cell
               *matCellDef="let row">{{row.firstname}}</td>
@@ -28,7 +37,15 @@
         <ng-container matColumnDef="lastname">
           <th mat-header-cell
               *matHeaderCellDef
-              mat-sort-header>Lastname
+              appMatFilter
+              mat-sort-header>
+            <mat-form-field appearance="fill">
+              <mat-label>Lastname</mat-label>
+              <input matInput
+                     formControlName="lastname"
+                     autocomplete="off">
+            </mat-form-field>
+            Lastname
           </th>
           <td mat-cell
               *matCellDef="let row">{{row.lastname}}</td>

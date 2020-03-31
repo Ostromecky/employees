@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SortDirection } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { toHttpParams } from '../../shared/helpers/http.helper';
+import { Query } from '../../shared/model/query.model';
 import { User } from '../model/user.model';
 
 @Injectable({
@@ -15,10 +15,8 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getUsers(...query): Observable<User[]> {
-    console.log('query', query);
-    const params = toHttpParams({...query[0]});
-    console.log('params', params);
+  getUsers(query: Query): Observable<User[]> {
+    const params = toHttpParams(query);
     return this.http.get<User[]>(`${this.apiUrl}/users`, {params});
   }
 }

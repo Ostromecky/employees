@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, SortDirection } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { merge, Observable, of } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, finalize, map, startWith, switchMap, take } from 'rxjs/operators';
+import { Query } from '../../../shared/model/query.model';
 import { User } from '../../model/user.model';
 import { UserService } from '../../service/user.service';
 
@@ -13,34 +15,36 @@ import { UserService } from '../../service/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersComponent implements OnInit {
-
   displayedColumns: string[] = ['firstname', 'lastname'];
   data: User[] = [];
   data$: Observable<User[]>;
   resultsLength = 0;
   isLoadingResults = false;
-
+  form: FormGroup;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private fb: FormBuilder) {
   }
 
   ngOnInit() {
+    this.initFilterForm();
     this.data$ = this.getUsersObservable();
   }
 
   private getUsersObservable(): Observable<User[]> {
-    return merge(this.sort.sortChange, this.paginator.page)
+    return merge(this.sort.sortChange, this.paginator.page, this.getFilterValue())
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.getUsers(
-            this.paginator.pageIndex + 1,
-            this.paginator.pageSize | 5,
-            this.sort.active,
-            this.sort.direction);
+          return this.getUsers({
+            page: this.paginator.pageIndex + 1,
+            limit: this.paginator.pageSize | 5,
+            activeSort: this.sort.active,
+            order: this.sort.direction,
+            filter: this.form.value
+          });
         }),
         map((data: User[]) => {
           this.resultsLength = data.length;
@@ -54,8 +58,21 @@ export class UsersComponent implements OnInit {
       );
   }
 
-  private getUsers(page: number, limit: number, activeSort: string, order: SortDirection): Observable<User[]> {
-    return this.userService.getUsers({page, limit, activeSort, order});
+  private getUsers(query: Query): Observable<User[]> {
+    return this.userService.getUsers(query);
   }
 
+  private initFilterForm() {
+    this.form = this.fb.group({
+      firstname: '',
+      lastname: ''
+    });
+  }
+
+  private getFilterValue(): Observable<object> {
+    return this.form.valueChanges.pipe(
+      debounceTime(300),
+      finalize(() => console.log('finished'))
+    );
+  }
 }
