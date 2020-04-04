@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../../../shared/shared.module';
 import { UserServiceSpy } from '../../service/mock/userServiceSpy';
 import { UserService } from '../../service/user.service';
-
 import { UsersComponent } from './users.component';
 
 describe('UsersComponent', () => {

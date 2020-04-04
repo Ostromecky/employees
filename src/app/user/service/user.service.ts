@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { toHttpParams } from '../../shared/helpers/http.helper';
 import { Query } from '../../shared/model/query.model';
 import { User } from '../model/user.model';
@@ -10,13 +11,11 @@ import { User } from '../model/user.model';
 })
 export class UserService {
 
-  readonly apiUrl = 'http://localhost:3000';
-
   constructor(private http: HttpClient) {
   }
 
   getUsers(query: Query): Observable<User[]> {
     const params = toHttpParams(query);
-    return this.http.get<User[]>(`${this.apiUrl}/users`, {params});
+    return this.http.get<User[]>(`${environment.apiUrl}/users`, {params});
   }
 }
