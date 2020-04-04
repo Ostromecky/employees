@@ -11,11 +11,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
-    SidenavComponent
+    SidenavComponent,
+    DashboardComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
     MatToolbarModule,
     SidenavComponent,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    DashboardComponent
   ]
 })
 export class CoreModule {

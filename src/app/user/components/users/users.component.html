@@ -6,10 +6,10 @@
       <mat-spinner></mat-spinner>
     </div>
 
-    <div class="example-table-container">
+    <div class="example-table-container"
+         [formGroup]="form">
 
       <table mat-table
-             [formGroup]="form"
              [dataSource]="data$ | async"
              class="example-table"
              matSort>

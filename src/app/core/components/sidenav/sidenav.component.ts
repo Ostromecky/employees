@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit {
-  routes: any[] = [
+  routes: object[] = [
     {
       title: 'User',
-      path: '/users',
+      path: 'users',
+      icon: 'delete'
+    },
+    {
+      title: 'Dashboard',
+      path: 'dashboard',
       icon: 'delete'
     }
   ];

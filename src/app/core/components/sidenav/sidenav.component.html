@@ -6,19 +6,20 @@
             color="accent">
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
-    <!--    <span><img src="./assets/devglan.png"></span>-->
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav mode="side"
+               style="min-width: 200px;"
                opened>
-    <mat-nav-list>
+    <mat-nav-list class="p-2">
       <a *ngFor="let route of routes"
          mat-list-item
-         [routerLink]="route.path"
+         [routerLink]="[route.path]"
+         class="border-radius-10"
          routerLinkActive="active-link">
         <mat-icon>{{route.icon}}</mat-icon>
-        <span>{{ route.title }}</span>
+        <span class="ml-2">{{ route.title }}</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>

@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from '../../../shared/shared.module';
 import { UserServiceSpy } from '../../service/mock/userServiceSpy';
 import { UserService } from '../../service/user.service';
 
@@ -20,11 +19,12 @@ describe('UsersComponent', () => {
       imports: [
         MatSortModule,
         BrowserAnimationsModule,
-        BrowserModule, MatPaginatorModule,
-        MatTableModule,
-        MatProgressSpinnerModule
+        BrowserModule,
+        SharedModule,
+        ReactiveFormsModule
       ],
       providers: [
+        FormBuilder,
         {
           provide: UserService,
           useClass: UserServiceSpy

@@ -24,7 +24,10 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  constructor(
+    private userService: UserService,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
