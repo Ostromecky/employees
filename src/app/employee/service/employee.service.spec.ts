@@ -21,11 +21,11 @@ describe('EmployeeService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
+  test('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('be able to retrieve employees from the API via GET', () => {
+  test('be able to retrieve employees from the API via GET', () => {
     const dummyEmployees: Employee[] = [
       {
         id: 1,

@@ -16,7 +16,6 @@ import { EmployeeService } from '../../service/employee.service';
 })
 export class EmployeesComponent implements OnInit {
   displayedColumns: string[] = ['firstname', 'lastname'];
-  data: Employee[] = [];
   data$: Observable<Employee[]>;
   resultsLength = 0;
   isLoadingResults = false;
@@ -36,9 +35,9 @@ export class EmployeesComponent implements OnInit {
   }
 
   private getEmployeesObservable(): Observable<Employee[]> {
-    return combineLatest(
-      (this.getFilterValue(), merge(this.sort.sortChange, this.paginator.page, this.getFilterValue()))
-    ).pipe(
+    return combineLatest((
+      this.getFilterValue(), merge(this.sort.sortChange, this.paginator.page, this.getFilterValue())
+    )).pipe(
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
@@ -46,7 +45,7 @@ export class EmployeesComponent implements OnInit {
         return this.getEmployees({
           page: this.paginator.pageIndex + 1,
           limit: this.paginator.pageSize | 5,
-          activeSort: this.sort.active,
+          sort: this.sort.active,
           order: this.sort.direction,
           filter: this.form.value
         });
@@ -76,8 +75,7 @@ export class EmployeesComponent implements OnInit {
 
   private getFilterValue(): Observable<object> {
     return this.form.valueChanges.pipe(
-      debounceTime(300),
-      finalize(() => console.log('finished'))
+      debounceTime(300)
     );
   }
 }

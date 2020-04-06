@@ -2,14 +2,15 @@
 
   <div class="spinner-container">
     <div class="example-loading-shade"
-         *ngIf="isLoadingResults === true">
+         *ngIf="isLoadingResults">
       <mat-spinner></mat-spinner>
     </div>
 
     <div class="example-table-container"
          [formGroup]="form">
 
-      <table mat-table
+      <table #table
+             mat-table
              [dataSource]="data$ | async"
              class="example-table"
              matSort>
@@ -56,6 +57,11 @@
         <tr mat-row
             *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      <ng-container *ngIf=" !isLoadingResults && !table.dataSource.length">
+        <div style="padding: 15px;"
+             class="empty">No data found
+        </div>
+      </ng-container>
     </div>
 
     <mat-paginator [length]="10"

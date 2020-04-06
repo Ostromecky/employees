@@ -1,7 +1,8 @@
+import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../../../shared/shared.module';
 import { EmployeeService } from '../../service/employee.service';
@@ -11,7 +12,7 @@ import { EmployeesComponent } from './employees.component';
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
   let fixture: ComponentFixture<EmployeesComponent>;
-
+  let debugElement: DebugElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeesComponent],
@@ -34,11 +35,17 @@ describe('EmployeesComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EmployeesComponent);
+    debugElement = fixture.debugElement;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  test('should appear when data is empty', () => {
+    const el = debugElement.query(By.css('div.empty')).nativeElement.textContent;
+    expect(el).toContain('No data found');
   });
 });
