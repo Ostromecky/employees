@@ -8,14 +8,14 @@ import { Component, OnInit } from '@angular/core';
 export class SidenavComponent implements OnInit {
   routes: object[] = [
     {
-      title: 'User',
-      path: 'users',
-      icon: 'delete'
-    },
-    {
       title: 'Dashboard',
       path: 'dashboard',
-      icon: 'delete'
+      icon: 'dashboard'
+    },
+    {
+      title: 'Employees',
+      path: 'employees',
+      icon: 'people'
     }
   ];
 

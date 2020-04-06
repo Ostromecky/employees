@@ -4,17 +4,17 @@ import { MatSortModule } from '@angular/material/sort';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../../../shared/shared.module';
-import { UserServiceSpy } from '../../service/mock/userServiceSpy';
-import { UserService } from '../../service/user.service';
-import { UsersComponent } from './users.component';
+import { EmployeeService } from '../../service/employee.service';
+import { EmployeeServiceSpy } from '../../service/mock/employeeServiceSpy';
+import { EmployeesComponent } from './employees.component';
 
-describe('UsersComponent', () => {
-  let component: UsersComponent;
-  let fixture: ComponentFixture<UsersComponent>;
+describe('EmployeesComponent', () => {
+  let component: EmployeesComponent;
+  let fixture: ComponentFixture<EmployeesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UsersComponent],
+      declarations: [EmployeesComponent],
       imports: [
         MatSortModule,
         BrowserAnimationsModule,
@@ -25,15 +25,15 @@ describe('UsersComponent', () => {
       providers: [
         FormBuilder,
         {
-          provide: UserService,
-          useClass: UserServiceSpy
+          provide: EmployeeService,
+          useClass: EmployeeServiceSpy
         }]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UsersComponent);
+    fixture = TestBed.createComponent(EmployeesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

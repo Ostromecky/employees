@@ -4,18 +4,18 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { toHttpParams } from '../../shared/helpers/http.helper';
 import { Query } from '../../shared/model/query.model';
-import { User } from '../model/user.model';
+import { Employee } from '../model/employee.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class EmployeeService {
 
   constructor(private http: HttpClient) {
   }
 
-  getUsers(query: Query): Observable<User[]> {
+  getEmployees(query: Query): Observable<Employee[]> {
     const params = toHttpParams(query);
-    return this.http.get<User[]>(`${environment.apiUrl}/users`, {params});
+    return this.http.get<Employee[]>(`${environment.apiUrl}/employees`, {params});
   }
 }

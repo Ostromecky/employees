@@ -5,19 +5,19 @@ import { MatSort } from '@angular/material/sort';
 import { combineLatest, merge, Observable, of } from 'rxjs';
 import { catchError, debounceTime, finalize, map, startWith, switchMap } from 'rxjs/operators';
 import { Query } from '../../../shared/model/query.model';
-import { User } from '../../model/user.model';
-import { UserService } from '../../service/user.service';
+import { Employee } from '../../model/employee.model';
+import { EmployeeService } from '../../service/employee.service';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
+  selector: 'app-employees',
+  templateUrl: './employees.component.html',
+  styleUrls: ['./employees.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersComponent implements OnInit {
+export class EmployeesComponent implements OnInit {
   displayedColumns: string[] = ['firstname', 'lastname'];
-  data: User[] = [];
-  data$: Observable<User[]>;
+  data: Employee[] = [];
+  data$: Observable<Employee[]>;
   resultsLength = 0;
   isLoadingResults = false;
   form: FormGroup;
@@ -25,17 +25,17 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
-    private userService: UserService,
+    private employeeService: EmployeeService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     this.initFilterForm();
-    this.data$ = this.getUsersObservable();
+    this.data$ = this.getEmployeesObservable();
   }
 
-  private getUsersObservable(): Observable<User[]> {
+  private getEmployeesObservable(): Observable<Employee[]> {
     return combineLatest(
       (this.getFilterValue(), merge(this.sort.sortChange, this.paginator.page, this.getFilterValue()))
     ).pipe(
@@ -43,7 +43,7 @@ export class UsersComponent implements OnInit {
       switchMap(() => {
         this.isLoadingResults = true;
         this.cdr.markForCheck();
-        return this.getUsers({
+        return this.getEmployees({
           page: this.paginator.pageIndex + 1,
           limit: this.paginator.pageSize | 5,
           activeSort: this.sort.active,
@@ -51,7 +51,7 @@ export class UsersComponent implements OnInit {
           filter: this.form.value
         });
       }),
-      map((data: User[]) => {
+      map((data: Employee[]) => {
         this.resultsLength = data.length;
         this.isLoadingResults = false;
         return data;
@@ -63,8 +63,8 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  private getUsers(query: Query): Observable<User[]> {
-    return this.userService.getUsers(query);
+  private getEmployees(query: Query): Observable<Employee[]> {
+    return this.employeeService.getEmployees(query);
   }
 
   private initFilterForm() {

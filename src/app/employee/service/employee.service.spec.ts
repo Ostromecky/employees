@@ -1,19 +1,19 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '../../../environments/environment';
-import { User } from '../model/user.model';
+import { Employee } from '../model/employee.model';
 
-import { UserService } from './user.service';
+import { EmployeeService } from './employee.service';
 
-describe('UserService', () => {
-  let service: UserService;
+describe('EmployeeService', () => {
+  let service: EmployeeService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.inject(UserService);
+    service = TestBed.inject(EmployeeService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -25,8 +25,8 @@ describe('UserService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('be able to retrieve users from the API via GET', () => {
-    const dummyUsers: User[] = [
+  it('be able to retrieve employees from the API via GET', () => {
+    const dummyEmployees: Employee[] = [
       {
         id: 1,
         firstname: 'Kamil',
@@ -38,12 +38,12 @@ describe('UserService', () => {
         lastname: 'Mały'
       }
     ];
-    service.getUsers({}).subscribe(users => {
-      expect(users.length).toBe(2);
-      expect(users).toEqual(dummyUsers);
+    service.getEmployees({}).subscribe(employees => {
+      expect(employees.length).toBe(2);
+      expect(employees).toEqual(dummyEmployees);
     });
-    const request = httpMock.expectOne(`${environment.apiUrl}/users`);
+    const request = httpMock.expectOne(`${environment.apiUrl}/employees`);
     expect(request.request.method).toBe('GET');
-    request.flush(dummyUsers);
+    request.flush(dummyEmployees);
   });
 });

@@ -4,14 +4,14 @@ import { DashboardComponent } from './core/components/dashboard/dashboard.compon
 
 const appRoutes: Routes = [
   {
-    path: 'users',
-    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
+    path: 'employees',
+    loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule)
   },
   {
     path: 'dashboard',
     component: DashboardComponent
-  }
-  // {path: '**', component: }
+  },
+  {path: '**', redirectTo: 'dashboard'}
 ];
 
 @NgModule({
