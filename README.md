@@ -14,6 +14,16 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+## Test
+
+Run `jest` to test the project. Use the `--coverage` flag for a coverage.
+
+## Fake JSON server
+
+Run `json-server --watch db.json` to run Fake JSON API.  
+* Edit [db.json](./db.json) to change your Fake API response data.  
+* More in [Docs](https://github.com/typicode/json-server)
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
