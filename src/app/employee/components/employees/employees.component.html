@@ -9,8 +9,7 @@
     <div class="example-table-container"
          [formGroup]="form">
 
-      <table #table
-             mat-table
+      <table mat-table
              [dataSource]="data$ | async"
              class="example-table"
              matSort>
@@ -57,7 +56,7 @@
         <tr mat-row
             *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      <ng-container *ngIf=" !isLoadingResults && !table.dataSource.length">
+      <ng-container *ngIf=" !isLoadingResults && resultsLength < 1">
         <div style="padding: 15px;"
              class="empty">No data found
         </div>

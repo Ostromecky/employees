@@ -7,7 +7,11 @@
     "build": "ng build",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "docker:build": "docker build -t employees-image  .",
+    "docker:run": "docker run --name employees-image -d -p 8080:80 employees-image",
+    "build:stats": "ng build --prod --stats-json",
+    "analyze": "webpack-bundle-analyzer dist/employees/stats-es2015.json"
   },
   "private": true,
   "jest": {
@@ -61,6 +65,7 @@
     "jest-preset-angular": "^8.1.2",
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
-    "typescript": "~3.7.5"
+    "typescript": "~3.7.5",
+    "webpack-bundle-analyzer": "^3.7.0"
   }
 }

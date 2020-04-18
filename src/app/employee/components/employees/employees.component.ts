@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { combineLatest, merge, Observable, of } from 'rxjs';
-import { catchError, debounceTime, finalize, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 import { Query } from '../../../shared/model/query.model';
 import { Employee } from '../../model/employee.model';
 import { EmployeeService } from '../../service/employee.service';
