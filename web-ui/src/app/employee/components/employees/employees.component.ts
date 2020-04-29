@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { combineLatest, merge, Observable, of } from 'rxjs';
 import { catchError, debounceTime, map, startWith, switchMap } from 'rxjs/operators';
+
 import { Query } from '../../../shared/model/query.model';
 import { Employee } from '../../model/employee.model';
 import { EmployeeService } from '../../service/employee.service';
@@ -12,7 +13,7 @@ import { EmployeeService } from '../../service/employee.service';
   selector: 'app-employees',
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeesComponent implements OnInit {
   displayedColumns: string[] = ['firstname', 'lastname'];
@@ -20,8 +21,8 @@ export class EmployeesComponent implements OnInit {
   resultsLength = 0;
   isLoadingResults = false;
   form: FormGroup;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private employeeService: EmployeeService,
@@ -31,51 +32,54 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit() {
     this.initFilterForm();
-    this.data$ = this.getEmployeesObservable();
+    this.data$ = this.getEmployeesObservable$();
   }
 
-  private getEmployeesObservable(): Observable<Employee[]> {
+  private getEmployeesObservable$(): Observable<Employee[]> {
     return combineLatest((
-      this.getFilterValue(), merge(this.sort.sortChange, this.paginator.page, this.getFilterValue())
+      this.getFilterValue$(), merge(this.sort.sortChange, this.paginator.page, this.getFilterValue$())
     )).pipe(
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
         this.cdr.markForCheck();
-        return this.getEmployees({
+
+        return this.getEmployees$({
           page: this.paginator.pageIndex + 1,
-          limit: this.paginator.pageSize | 5,
+          limit: this.paginator.pageSize || 5,
           sort: this.sort.active,
           order: this.sort.direction,
-          filter: this.form.value
+          filter: this.form.value,
         });
       }),
       map((data: Employee[]) => {
         this.resultsLength = data.length;
         this.isLoadingResults = false;
+
         return data;
       }),
       catchError(() => {
         this.isLoadingResults = false;
+
         return of([]);
-      })
+      }),
     );
   }
 
-  private getEmployees(query: Query): Observable<Employee[]> {
+  private getEmployees$(query: Query): Observable<Employee[]> {
     return this.employeeService.getEmployees(query);
   }
 
   private initFilterForm() {
     this.form = this.fb.group({
       firstname: '',
-      lastname: ''
+      lastname: '',
     });
   }
 
-  private getFilterValue(): Observable<object> {
+  private getFilterValue$(): Observable<object> {
     return this.form.valueChanges.pipe(
-      debounceTime(300)
+      debounceTime(300),
     );
   }
 }

@@ -1,22 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+  styleUrls: ['./sidenav.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavComponent implements OnInit {
   routes: object[] = [
     {
       title: 'Dashboard',
       path: 'dashboard',
-      icon: 'dashboard'
+      icon: 'dashboard',
     },
     {
       title: 'Employees',
       path: 'employees',
-      icon: 'people'
-    }
+      icon: 'people',
+    },
   ];
 
   constructor() {
@@ -24,5 +25,4 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }
