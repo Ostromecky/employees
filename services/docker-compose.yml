@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      target: development
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+    ports:
+      - '3000:3000'
+    command: npm run start:dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: employees
