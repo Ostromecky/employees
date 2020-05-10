@@ -11,6 +11,8 @@ export class ConfigService implements TypeOrmOptionsFactory {
       username: 'root',
       password: 'root',
       database: 'employees',
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
     };
   }
 }

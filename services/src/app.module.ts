@@ -1,3 +1,4 @@
+import { UserModule } from './user/user.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -7,6 +8,7 @@ import { ConfigService } from './config/config.service';
 
 @Module({
   imports: [
+    UserModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useExisting: ConfigService,
