@@ -10,7 +10,8 @@ services:
       DB_HOST: ${DB_HOST}
     ports:
       - '3000:3000'
-    command: npm run start:dev
+      - '9229:9229'
+    command: npm run start:debug
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

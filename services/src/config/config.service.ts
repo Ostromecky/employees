@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
-export class ConfigService implements TypeOrmOptionsFactory {
+export class ConfigService implements TypeOrmOptionsFactory, JwtOptionsFactory {
+  createJwtOptions(): JwtModuleOptions {
+    return {
+      secret: process.env.JWT_SECRET || 'secret',
+    };
+  }
+
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'postgres' as 'postgres',
