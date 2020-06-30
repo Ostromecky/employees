@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcryptjs from 'bcryptjs';
 import { User } from 'src/user/entities/user.entity';
@@ -17,11 +21,11 @@ export class AuthService {
     if (user) {
       const valid = await bcryptjs.compare(dto.password, user.password);
       if (valid) {
-        delete user.password;
+        // delete user.password;
         return user;
       }
     }
-    throw new NotFoundException();
+    throw new ForbiddenException();
   }
 
   async login(user: User) {

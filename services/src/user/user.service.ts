@@ -1,14 +1,17 @@
 import {
-  Injectable,
   ConflictException,
+  Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindManyOptions, getConnection } from 'typeorm';
-import { User } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import * as bcryptjs from 'bcryptjs';
+import { Repository } from 'typeorm';
+import { DataDto } from '../shared/dto/data.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { QueryDto } from './dto/query.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -21,14 +24,49 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  findByQuery(query: FindManyOptions) {
+  async findByQuery(query: QueryDto): Promise<any> {
     const take = query.take || 10;
     const skip = query.skip || 0;
+    const queryBuilder = this.usersRepository.createQueryBuilder('user');
+
+    if (query.firstName) {
+      queryBuilder.andWhere('user.firstName like :firstName', {
+        firstName: '%' + query.firstName + '%',
+      });
+    }
+    if (query.lastName) {
+      queryBuilder.andWhere('user.isActive like :lastName', {
+        lastName: '%' + query.lastName + '%',
+      });
+    }
+    if (query.isActive) {
+      queryBuilder.andWhere('user.isActive =:isActive', {
+        isActive: query.isActive,
+      });
+    }
+
+    const [result, total] = await queryBuilder
+      .take(take)
+      .skip(skip)
+      .getManyAndCount();
+
+    return new DataDto({
+      data: result.map(
+        (user: User) =>
+          new UserDto({
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            isActive: user.isActive,
+          }),
+      ),
+      count: total,
+    });
   }
 
   async findForAuth(userName: string): Promise<User | undefined> {
-    const user = await getConnection()
-      .createQueryBuilder(User, 'user')
+    const user = await this.usersRepository
+      .createQueryBuilder('user')
       .addSelect('user.password')
       .where('user.userName = :userName', { userName })
       .getOne();
@@ -43,7 +81,7 @@ export class UsersService {
     return user;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.usersRepository.delete(id);
   }
 
