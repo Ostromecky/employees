@@ -1,5 +1,9 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@3.0.1
+  heroku: circleci/heroku@1.0.1
+
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
