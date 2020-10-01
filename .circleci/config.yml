@@ -54,12 +54,12 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t heroku-dockerize:circleci .
+            docker build -t ostromecky-employees-api:circleci .
             docker images
       - persist_to_workspace:
           root: ~/project
           paths:
-            - packages/<< parameters.package_name >>
+            - << parameters.package_name >>
 
   deploy:
     parameters:
@@ -85,8 +85,8 @@ jobs:
           name: Pushing to heroku registry
           command: |
             heroku container:login
-            heroku container:push web --arg NODE_ENV=production -a $HEROKU_APP_NAME
-            heroku container:release web -a $HEROKU_APP_NAME
+            heroku container:push web --arg NODE_ENV=production -a ostromecky-employees-api
+            heroku container:release web -a ostromecky-employees-api
 
 workflows:
   version: 2
@@ -118,8 +118,16 @@ workflows:
       - build:
           name: web-ui-build
           package_name: web-ui
+          filters:
+            branches:
+              only:
+                - master
       - deploy:
           name: app-deploy
           package_name: web-ui
           requires:
             - Web-ui-build
+          filters:
+            branches:
+              only:
+                - master
