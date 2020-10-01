@@ -1,0 +1,24 @@
+version: 2.1
+orbs:
+  node: circleci/node@3.0.1
+jobs:
+  build-and-test:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Running npm test
+          command: |
+            npm run test
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t ostromecky-employees-api:circleci .
+            docker images
+workflows:
+  build-test-deploy:
+    jobs:
+      - build-and-test
