@@ -1,0 +1,121 @@
+version: 2.1
+
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  # A parameter per package
+  services:
+    type: boolean
+    default: false
+  web-ui:
+    type: boolean
+    default: false
+
+executors:
+  node:
+    docker:
+      - image: circleci/node
+
+jobs:
+  trigger-workflows:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Trigger workflows
+          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
+
+  build:
+    parameters:
+      package_name:
+        type: string
+
+    executor: node
+    working_directory: ~/project/<< parameters.package_name >>
+
+    steps:
+      - checkout:
+          path: ~/project
+      # This step is added only to show that we are in the package directory
+      - node/install-packages
+      - run:
+          name: Running npm test
+          command: |
+            npm run test
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t heroku-dockerize:circleci .
+            docker images
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - packages/<< parameters.package_name >>
+
+  deploy:
+    parameters:
+      package_name:
+        type: string
+
+    executor: node
+    working_directory: ~/project/<< parameters.package_name >>
+
+    steps:
+      - attach_workspace:
+          at: ~/project
+      # This step is added to show that files are available from the build job.
+      - checkout
+      - run:
+          name: Storing previous commit
+          command: |
+            git rev-parse HEAD > ./commit.txt
+      - heroku/install
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Pushing to heroku registry
+          command: |
+            heroku container:login
+            heroku container:push web --arg NODE_ENV=production -a $HEROKU_APP_NAME
+            heroku container:release web -a $HEROKU_APP_NAME
+
+workflows:
+  version: 2
+
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
+
+  # Workflows defined for each package.
+
+  services:
+    when: << pipeline.parameters.services >>
+    jobs:
+      - build:
+          name: services-build
+          package_name: services
+      - deploy:
+          name: services-deploy
+          package_name: api
+          requires:
+            - services-build
+
+  web-ui:
+    when: << pipeline.parameters.web-ui >>
+    jobs:
+      - build:
+          name: web-ui-build
+          package_name: web-ui
+      - deploy:
+          name: app-deploy
+          package_name: web-ui
+          requires:
+            - Web-ui-build
