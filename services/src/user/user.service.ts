@@ -35,12 +35,12 @@ export class UsersService {
       });
     }
     if (query.lastName) {
-      queryBuilder.andWhere('user.isActive like :lastName', {
+      queryBuilder.andWhere('user.lastName like :lastName', {
         lastName: '%' + query.lastName + '%',
       });
     }
     if (query.isActive) {
-      queryBuilder.andWhere('user.isActive =:isActive', {
+      queryBuilder.andWhere('user.isActive = :isActive', {
         isActive: query.isActive,
       });
     }
@@ -103,7 +103,7 @@ export class UsersService {
     }
   }
 
-  async update(userId: number, dto: UpdateUserDto): Promise<User> {
+  async updateUser(userId: number, dto: UpdateUserDto): Promise<User> {
     if (dto.password) {
       dto.password = await this.hashPassword(dto);
     }

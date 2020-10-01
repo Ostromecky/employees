@@ -1,0 +1,51 @@
+version: "3.7"
+services:
+  api:
+    build:
+      context: ../services/
+      target: development
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: ${DB_HOST}
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+
+  web-ui:
+    build:
+      context: ../web-ui/
+    depends_on:
+      - api
+    ports:
+      - "4200:80"
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_SCHEMA}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    links:
+      - "postgres:pg"
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: qwer!234
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - "5051:80"
+    restart: unless-stopped
+
+volumes:
+  postgres:
+  pgadmin:
+  web-ui:

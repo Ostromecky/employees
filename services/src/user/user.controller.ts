@@ -7,14 +7,15 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { plainToClass } from 'class-transformer';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { DataDto } from '../shared/dto/data.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryDto } from './dto/query.dto';
 import { UserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './user.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -28,9 +29,11 @@ export class UserController {
   }
 
   // @UseGuards(new JwtAuthGuard())
+  @ApiOperation({ summary: 'Fetch users using query' })
   @Get()
   async findByQuery(@Query() queryDto: QueryDto): Promise<DataDto<UserDto>> {
-    return await this.usersService.findByQuery(queryDto);
+    const query = plainToClass(QueryDto, queryDto);
+    return await this.usersService.findByQuery(query);
   }
 
   @UseGuards(new JwtAuthGuard())
