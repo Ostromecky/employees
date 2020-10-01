@@ -38,7 +38,7 @@ jobs:
         type: string
 
     executor: node
-    working_directory: ~/project/<< parameters.package_name >>
+    working_directory: ~/project/services
 
     steps:
       - checkout:
