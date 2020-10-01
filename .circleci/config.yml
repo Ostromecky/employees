@@ -101,7 +101,6 @@ workflows:
   # Workflows defined for each package.
 
   services:
-    when: << pipeline.parameters.services >>
     jobs:
       - build:
           name: services-build
@@ -112,22 +111,21 @@ workflows:
           requires:
             - services-build
 
-  web-ui:
-    when: << pipeline.parameters.web-ui >>
-    jobs:
-      - build:
-          name: web-ui-build
-          package_name: web-ui
-          filters:
-            branches:
-              only:
-                - master
-      - deploy:
-          name: app-deploy
-          package_name: web-ui
-          requires:
-            - Web-ui-build
-          filters:
-            branches:
-              only:
-                - master
+  # web-ui:
+  #   jobs:
+  #     - build:
+  #         name: web-ui-build
+  #         package_name: web-ui
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #     - deploy:
+  #         name: app-deploy
+  #         package_name: web-ui
+  #         requires:
+  #           - Web-ui-build
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
