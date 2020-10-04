@@ -41,10 +41,10 @@ jobs:
     working_directory: ~/project/services
 
     steps:
-      - checkout:
-          path: ~/project
+      - checkout
       # This step is added only to show that we are in the package directory
-      - node/install-packages
+      - node/install-packages:
+          app-dir: ~/project/services
       - run:
           name: Running npm test
           command: |
