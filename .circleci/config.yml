@@ -13,7 +13,7 @@ parameters:
   # A parameter per package
   services:
     type: boolean
-    default: false
+    default: true
   web-ui:
     type: boolean
     default: false
