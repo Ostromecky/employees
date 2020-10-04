@@ -39,7 +39,6 @@ jobs:
 
     executor: node
     working_directory: ~/project/services
-    app-dir: ~/project/services
 
     steps:
       - checkout:
