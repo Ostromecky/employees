@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - checkout:
-          path: ~/services
+          path: ~/project
       # This step is added only to show that we are in the package directory
       - node/install-packages
       - run:
