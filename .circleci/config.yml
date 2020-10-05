@@ -43,10 +43,14 @@ jobs:
       - checkout
       # This step is added only to show that we are in the package directory
 
-      - node/install-packages:
-          working_directory: services
-
+      # - node/install-packages
       - run:
+          working_directory: services
+          name: install dependencies
+          command: |
+            npm install
+      - run:
+          working_directory: services
           name: Running npm test
           command: |
             npm run test
