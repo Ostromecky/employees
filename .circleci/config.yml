@@ -43,9 +43,10 @@ jobs:
     steps:
       - checkout
       # This step is added only to show that we are in the package directory
-      - run: 
+      - run: |
           command: |
-            npm install
+            cd services
+      - node/install-packages
       - run:
           name: Running npm test
           command: |
