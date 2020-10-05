@@ -112,7 +112,7 @@ workflows:
           package_name: services
       - deploy:
           name: services-deploy
-          package_name: api
+          package_name: services
           requires:
             - services-build
   # web-ui:
