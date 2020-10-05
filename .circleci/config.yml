@@ -33,9 +33,9 @@ jobs:
           command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
 
   build:
-    # parameters:
-    #   package_name:
-    #     type: string
+    parameters:
+      package_name:
+        type: string
 
     executor: node
     working_directory: ~/project/services/
