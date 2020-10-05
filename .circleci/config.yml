@@ -38,14 +38,12 @@ jobs:
         type: string
 
     executor: node
-    working_directory: ~/project/services/
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/project/services
       # This step is added only to show that we are in the package directory
-      - run: |
-          command: |
-            cd services
+
       - node/install-packages
       - run:
           name: Running npm test
