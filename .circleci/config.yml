@@ -43,7 +43,6 @@ jobs:
       - checkout
       # This step is added only to show that we are in the package directory
 
-      # - node/install-packages
       - run:
           working_directory: services
           name: install dependencies
@@ -57,6 +56,7 @@ jobs:
       - setup_remote_docker:
           version: 18.09.3
       - run:
+          working_directory: services
           name: Build Docker image
           command: |
             docker build -t ostromecky-employees-api:circleci .
