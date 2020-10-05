@@ -41,7 +41,7 @@ jobs:
     working_directory: ~/project/services
 
     steps:
-      - checkout
+      # - checkout
       # This step is added only to show that we are in the package directory
 
       - node/install-packages
