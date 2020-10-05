@@ -43,7 +43,9 @@ jobs:
     steps:
       - checkout
       # This step is added only to show that we are in the package directory
-      - node/install-packages
+      - run: 
+          command: |
+            npm install
       - run:
           name: Running npm test
           command: |
@@ -79,7 +81,7 @@ jobs:
             git rev-parse HEAD > ./commit.txt
       - heroku/install
       - setup_remote_docker:
-          version: 18.06.0-ce
+          version: 18.09.3
       - run:
           name: Pushing to heroku registry
           command: |
