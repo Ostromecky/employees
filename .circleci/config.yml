@@ -33,18 +33,17 @@ jobs:
           command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
 
   build:
-    parameters:
-      package_name:
-        type: string
+    # parameters:
+    #   package_name:
+    #     type: string
 
     executor: node
-    working_directory: ~/project/services
+    working_directory: ~/project/services/
 
     steps:
       - checkout
       # This step is added only to show that we are in the package directory
-      - node/install-packages:
-          app-dir: ~/project/services
+      - node/install-packages
       - run:
           name: Running npm test
           command: |
@@ -110,7 +109,6 @@ workflows:
           package_name: api
           requires:
             - services-build
-
   # web-ui:
   #   jobs:
   #     - build:
