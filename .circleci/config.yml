@@ -64,7 +64,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - << parameters.package_name >>
+            - services
 
   deploy:
     parameters:
@@ -75,8 +75,8 @@ jobs:
     working_directory: services
 
     steps:
-      # - attach_workspace:
-      #     at: ~/project
+      - attach_workspace:
+          at: ~/project/services
       # This step is added to show that files are available from the build job.
       - checkout
       - run:
