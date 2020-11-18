@@ -4,13 +4,7 @@ orbs:
   node: circleci/node@3.0.1
   heroku: circleci/heroku@1.0.1
 
-parameters:
-  # This parameter is used to trigger the main workflow
-  trigger:
-    type: boolean
-    default: true
-
-  # A parameter per package
+  
   services:
     type: boolean
     default: true
@@ -33,10 +27,6 @@ jobs:
           command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
 
   build:
-    parameters:
-      package_name:
-        type: string
-
     executor: node
 
     steps:
@@ -67,10 +57,6 @@ jobs:
             - services
 
   deploy:
-    parameters:
-      package_name:
-        type: string
-
     executor: node
     working_directory: services
 
@@ -99,10 +85,9 @@ workflows:
     jobs:
       - build:
           name: services-build
-          package_name: services
       - deploy:
           name: services-deploy
-          package_name: services
+        
           requires:
             - services-build
   # web-ui:
