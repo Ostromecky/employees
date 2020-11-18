@@ -48,9 +48,9 @@ jobs:
       - checkout
 
       - run:
+          working_directory: services
           name: Pushing to heroku registry
           command: |
-            ls
             sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
             docker tag ostromecky-employees-api registry.heroku.com/ostromecky-employees-api/web
