@@ -3,7 +3,6 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.1
   heroku: circleci/heroku@1.0.1
-
   
   services:
     type: boolean
@@ -18,14 +17,6 @@ executors:
       - image: circleci/node
 
 jobs:
-  trigger-workflows:
-    executor: node
-    steps:
-      - checkout
-      - run:
-          name: Trigger workflows
-          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
-
   build:
     executor: node
 
@@ -50,21 +41,21 @@ jobs:
           name: Build Docker image
           command: |
             docker build -t ostromecky-employees-api:circleci .
-            docker images
       # - persist_to_workspace:
       #     root: ~/project
       #     paths:
       #       - services
 
   deploy:
-    executor: node
+    machine: true
 
     steps:
-      # - checkout
+      - checkout
       # - heroku/install
       - run:
           name: Pushing to heroku registry
           command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
             heroku container:push web --arg NODE_ENV=production -a ostromecky-employees-api
             heroku container:release web -a ostromecky-employees-api
@@ -74,9 +65,6 @@ workflows:
 
   # The main workflow responsible for triggering all other workflows
   # in which changes are detected.
-  ci:
-    jobs:
-      - trigger-workflows
 
   # Workflows defined for each package.
 
