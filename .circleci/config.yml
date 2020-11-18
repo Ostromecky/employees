@@ -51,12 +51,11 @@ jobs:
           working_directory: services
           name: Pushing to heroku registry
           command: |
-            ls
             sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
             docker tag ostromecky-employees-api registry.heroku.com/ostromecky-employees-api/web
             docker push registry.heroku.com/ostromecky-employees-api/web
-            heroku container:release -a ostromecky-employees-api web
+            # heroku container:release -a ostromecky-employees-api web
 
 workflows:
   version: 2
