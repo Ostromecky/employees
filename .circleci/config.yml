@@ -39,7 +39,7 @@ jobs:
           working_directory: services
           name: Build Docker image
           command: |
-            docker build -t --target release ostromecky-employees-api .
+            docker build --target release -t ostromecky-employees-api .
       - run:
           working_directory: services
           name: Pushing to heroku registry
