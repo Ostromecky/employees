@@ -39,11 +39,7 @@ jobs:
           working_directory: services
           name: Build Docker image
           command: |
-            docker build -t ostromecky-employees-api:circleci .
-      # - persist_to_workspace:
-      #     root: ~/project
-      #     paths:
-      #       - services
+            docker build -t ostromecky-employees-api .
 
   deploy:
     machine: true
@@ -56,8 +52,8 @@ jobs:
           command: |
             sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
-            heroku container:push -a ostromecky-employees-api:circleci --arg NODE_ENV=production web
-            heroku container:release -a ostromecky-employees-api:circleci web
+            heroku container:push -a ostromecky-employees-api --arg NODE_ENV=production web
+            heroku container:release -a ostromecky-employees-api web
 
 workflows:
   version: 2
