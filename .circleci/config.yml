@@ -73,7 +73,6 @@ jobs:
 
     executor: node
     working_directory: services
-    machine: true
 
     steps:
       - heroku/install
