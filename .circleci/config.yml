@@ -70,13 +70,13 @@ jobs:
     parameters:
       package_name:
         type: string
-
+    
     executor: node
     working_directory: services
 
     steps:
-      - attach_workspace:
-          at: ~/project/services
+      # - attach_workspace:
+      #     at: ~/project/services
       # This step is added to show that files are available from the build job.
       - checkout
       - run:
