@@ -52,7 +52,8 @@ jobs:
           command: |
             sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
-            heroku container:push -a ostromecky-employees-api --arg NODE_ENV=production web
+            docker tag ostromecky-employees-api registry.heroku.com/ostromecky-employees-api/web
+            docker push registry.heroku.com/ostromecky-employees-api/web
             heroku container:release -a ostromecky-employees-api web
 
 workflows:
