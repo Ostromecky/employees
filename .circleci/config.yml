@@ -51,17 +51,17 @@ jobs:
           command: |
             docker build -t ostromecky-employees-api:circleci .
             docker images
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - services
+      # - persist_to_workspace:
+      #     root: ~/project
+      #     paths:
+      #       - services
 
   deploy:
     executor: node
-    working_directory: services
 
     steps:
-      - heroku/install
+      # - checkout
+      # - heroku/install
       - run:
           name: Pushing to heroku registry
           command: |
