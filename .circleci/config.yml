@@ -22,7 +22,6 @@ jobs:
 
     steps:
       - checkout
-      # This step is added only to show that we are in the package directory
 
       - run:
           working_directory: services
@@ -51,22 +50,17 @@ jobs:
 
     steps:
       - checkout
-      # - heroku/install
+
       - run:
           name: Pushing to heroku registry
           command: |
             sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
-            heroku container:push web --arg NODE_ENV=production -a ostromecky-employees-api
-            heroku container:release web -a ostromecky-employees-api
+            heroku container:push -a ostromecky-employees-api --arg NODE_ENV=production web
+            heroku container:release -a ostromecky-employees-api web
 
 workflows:
   version: 2
-
-  # The main workflow responsible for triggering all other workflows
-  # in which changes are detected.
-
-  # Workflows defined for each package.
 
   services:
     jobs:
@@ -77,21 +71,3 @@ workflows:
         
           requires:
             - services-build
-  # web-ui:
-  #   jobs:
-  #     - build:
-  #         name: web-ui-build
-  #         package_name: web-ui
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #     - deploy:
-  #         name: app-deploy
-  #         package_name: web-ui
-  #         requires:
-  #           - Web-ui-build
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
