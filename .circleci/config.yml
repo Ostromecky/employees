@@ -50,6 +50,7 @@ jobs:
       - run:
           name: Pushing to heroku registry
           command: |
+            docker images
             sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
             docker tag ostromecky-employees-api:latest registry.heroku.com/ostromecky-employees-api/web
@@ -61,8 +62,8 @@ workflows:
 
   services:
     jobs:
-      - build:
-          name: services-build
+      # - build:
+      #     name: services-build
       - deploy:
           name: services-deploy
         
