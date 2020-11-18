@@ -75,7 +75,6 @@ workflows:
   # The main workflow responsible for triggering all other workflows
   # in which changes are detected.
   ci:
-    when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows
 
