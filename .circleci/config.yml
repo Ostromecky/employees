@@ -40,6 +40,7 @@ jobs:
           name: Build Docker image
           command: |
             docker build -t ostromecky-employees-api .
+            docker images
 
   deploy:
     machine: true
