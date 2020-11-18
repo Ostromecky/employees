@@ -70,22 +70,12 @@ jobs:
     parameters:
       package_name:
         type: string
-    
+
     executor: node
     working_directory: services
 
     steps:
-      # - attach_workspace:
-      #     at: ~/project/services
-      # This step is added to show that files are available from the build job.
-      - checkout
-      - run:
-          name: Storing previous commit
-          command: |
-            git rev-parse HEAD > ./commit.txt
       - heroku/install
-      - setup_remote_docker:
-          version: 18.09.3
       - run:
           name: Pushing to heroku registry
           command: |
