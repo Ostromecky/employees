@@ -19,7 +19,7 @@ export class ConfigService implements TypeOrmOptionsFactory, JwtOptionsFactory {
       password: process.env.DB_PASSWORD || 'root',
       database: process.env.DB_SCHEMA || 'employees',
       entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: JSON.parse(process.env.DB_SYNC) || false,
     };
   }
 }

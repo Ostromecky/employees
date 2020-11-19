@@ -28,7 +28,7 @@ export class UserController {
     return await this.usersService.createUser(createUserDto);
   }
 
-  // @UseGuards(new JwtAuthGuard())
+  @UseGuards(new JwtAuthGuard())
   @ApiOperation({ summary: 'Fetch users using query' })
   @Get()
   async findByQuery(@Query() queryDto: QueryDto): Promise<DataDto<UserDto>> {
