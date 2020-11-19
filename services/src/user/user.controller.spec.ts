@@ -21,8 +21,8 @@ describe('UserController', () => {
         { provide: AuthGuard, useValue: mockGuard },
       ],
     })
-      // .overrideGuard(AuthGuard)
-      // .useValue(mockGuard)
+      .overrideGuard(AuthGuard)
+      .useValue(mockGuard)
       .compile();
 
     userController = app.get<UserController>(UserController);

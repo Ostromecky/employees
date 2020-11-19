@@ -8,6 +8,8 @@ services:
       - postgres
     environment:
       DB_HOST: ${DB_HOST}
+      AUTH_ENABLED: ${AUTH_ENABLED}
+      DB_SYNC: ${DB_SYNC}
     ports:
       - '3000:3000'
       - '9229:9229'
