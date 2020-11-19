@@ -75,6 +75,9 @@ workflows:
     jobs:
       - build:
           name: services-build
+          filters: 
+            branches: 
+              only: master
       # - deploy:
       #     name: services-deploy
         
