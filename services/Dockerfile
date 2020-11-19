@@ -24,6 +24,10 @@ FROM base AS builder
 
 COPY package.json ./
 
+RUN npm install
+
+COPY . .
+
 RUN npm run build
 
 # ----- Release ----- #
