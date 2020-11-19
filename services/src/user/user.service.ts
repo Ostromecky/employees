@@ -24,7 +24,7 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async findByQuery(query: QueryDto): Promise<any> {
+  async findByQuery(query: QueryDto): Promise<DataDto<UserDto>> {
     const take = query.take || 10;
     const skip = query.skip || 0;
     const queryBuilder = this.usersRepository.createQueryBuilder('user');

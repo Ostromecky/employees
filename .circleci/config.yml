@@ -3,17 +3,10 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.1
   heroku: circleci/heroku@1.0.1
-
-parameters:
-  # This parameter is used to trigger the main workflow
-  trigger:
-    type: boolean
-    default: true
-
-  # A parameter per package
+  
   services:
     type: boolean
-    default: false
+    default: true
   web-ui:
     type: boolean
     default: false
@@ -24,109 +17,69 @@ executors:
       - image: circleci/node
 
 jobs:
-  trigger-workflows:
+  build:
     executor: node
+
     steps:
       - checkout
+
       - run:
-          name: Trigger workflows
-          command: chmod +x .circleci/circle_trigger.sh && .circleci/circle_trigger.sh
-
-  build:
-    parameters:
-      package_name:
-        type: string
-
-    executor: node
-    working_directory: ~/project/services
-    app-dir: ~/project/services
-
-    steps:
-      - checkout:
-          path: ~/project
-      # This step is added only to show that we are in the package directory
-      - node/install-packages
+          working_directory: services
+          name: install dependencies
+          command: |
+            npm install
       - run:
+          working_directory: services
           name: Running npm test
           command: |
             npm run test
       - setup_remote_docker:
-          version: 18.06.0-ce
+          version: 18.09.3
       - run:
+          working_directory: services
           name: Build Docker image
           command: |
-            docker build -t ostromecky-employees-api:circleci .
-            docker images
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - << parameters.package_name >>
-
-  deploy:
-    parameters:
-      package_name:
-        type: string
-
-    executor: node
-    working_directory: ~/project/<< parameters.package_name >>
-
-    steps:
-      - attach_workspace:
-          at: ~/project
-      # This step is added to show that files are available from the build job.
-      - checkout
+            docker build --target release -t ostromecky-employees-api .
       - run:
-          name: Storing previous commit
-          command: |
-            git rev-parse HEAD > ./commit.txt
-      - heroku/install
-      - setup_remote_docker:
-          version: 18.06.0-ce
-      - run:
+          working_directory: services
           name: Pushing to heroku registry
           command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
             heroku container:login
-            heroku container:push web --arg NODE_ENV=production -a ostromecky-employees-api
-            heroku container:release web -a ostromecky-employees-api
+            docker tag ostromecky-employees-api registry.heroku.com/ostromecky-employees-api/web
+            docker push registry.heroku.com/ostromecky-employees-api/web
+            heroku container:release -a ostromecky-employees-api web
+
+
+  deploy:
+    machine: true
+
+    steps:
+      - checkout
+
+      - run:
+          working_directory: services
+          name: Pushing to heroku registry
+          command: |
+            docker images
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            heroku container:login
+            docker tag ostromecky-employees-api registry.heroku.com/ostromecky-employees-api/web
+            docker push registry.heroku.com/ostromecky-employees-api/web
+            heroku container:release -a ostromecky-employees-api web
 
 workflows:
   version: 2
-
-  # The main workflow responsible for triggering all other workflows
-  # in which changes are detected.
-  ci:
-    when: << pipeline.parameters.trigger >>
-    jobs:
-      - trigger-workflows
-
-  # Workflows defined for each package.
 
   services:
     jobs:
       - build:
           name: services-build
-          package_name: services
-      - deploy:
-          name: services-deploy
-          package_name: api
-          requires:
-            - services-build
-
-  # web-ui:
-  #   jobs:
-  #     - build:
-  #         name: web-ui-build
-  #         package_name: web-ui
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #     - deploy:
-  #         name: app-deploy
-  #         package_name: web-ui
-  #         requires:
-  #           - Web-ui-build
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
+          filters: 
+            branches: 
+              only: master
+      # - deploy:
+      #     name: services-deploy
+        
+      #     requires:
+      #       - services-build
